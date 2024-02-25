@@ -18,9 +18,16 @@ class FileExporter : BaseExporter<LogRecord>
     {
         foreach (var record in batch)
         {
+            var winLog = new WinLogModel
+            {
+                TimeCreated = record.Timestamp,
+                Level = record.LogLevel,
+                Message = record.Body,
+                EventId = record.EventId
+            };
             File.AppendAllText(
                 _path,
-                JsonConvert.SerializeObject(record) + Environment.NewLine
+                JsonConvert.SerializeObject(winLog) + Environment.NewLine
             );
         }
 
