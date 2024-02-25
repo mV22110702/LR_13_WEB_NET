@@ -1,0 +1,66 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+  otlp/loadbalanced:
+    protocols:
+      grpc:
+        endpoint: localhost:4319
+      http:
+        endpoint: localhost:4320
+
+processors:
+  batch:
+  probabilistic_sampler/tracing:
+    sampling_percentage: 50
+  tail_sampling:
+    policies:
+      [
+        {
+          name: no-errors,
+          type: status-code,
+          status_code: { status_codes: [ ERROR ] }
+        }
+      ]
+
+exporters:
+  debug:
+    verbosity: detailed
+  file/metric-exporter:
+    path: ./collector-metric-export.json
+  file/trace-exporter:
+    path: ./collector-trace-export.json
+  otlp/jaeger:
+    endpoint: localhost:14250
+    tls:
+      insecure: true
+  loadbalancing:
+    routing_key: "service"
+    protocol:
+      otlp:
+        timeout: 1s
+    resolver:
+      static:
+        hostnames:
+          - localhost:4319
+
+service:
+  extensions: [ ]
+  pipelines:
+    traces/before_loadbalancing:
+      receivers:
+        - otlp
+      processors: [ ]
+      exporters:
+        - loadbalancing
+    traces/after_loadbalancing:
+      receivers: [ otlp/loadbalanced ]
+      processors: [ probabilistic_sampler/tracing, tail_sampling, batch ]
+      exporters: [ debug, otlp/jaeger, file/trace-exporter ]
+    metrics:
+      receivers: [ otlp/loadbalanced ]
+      processors: [ batch ]
+      exporters: [ debug, file/metric-exporter ]

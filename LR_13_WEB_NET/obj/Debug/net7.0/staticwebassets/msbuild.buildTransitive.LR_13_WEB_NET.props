@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\LR_13_WEB_NET.props" />
+</Project>
