@@ -56,3 +56,4 @@ E:\projects\University\ASP_NET\LR_13_WEB_NET\LR_13_WEB_NET\bin\Debug\net7.0\Open
 E:\projects\University\ASP_NET\LR_13_WEB_NET\LR_13_WEB_NET\bin\Debug\net7.0\OpenTelemetry.Instrumentation.Http.dll
 E:\projects\University\ASP_NET\LR_13_WEB_NET\LR_13_WEB_NET\bin\Debug\net7.0\Newtonsoft.Json.dll
 E:\projects\University\ASP_NET\LR_13_WEB_NET\LR_13_WEB_NET\bin\Debug\net7.0\file-log-exporter.json
+E:\projects\University\ASP_NET\LR_13_WEB_NET\LR_13_WEB_NET\obj\Debug\net7.0\LR_13_WEB_NET.sourcelink.json

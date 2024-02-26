@@ -20,10 +20,10 @@ class FileExporter : BaseExporter<LogRecord>
         {
             var winLog = new WinLogModel
             {
-                TimeCreated = record.Timestamp,
+                TimeCreated = new DateTimeOffset(record.Timestamp).ToUnixTimeMilliseconds(),
                 Level = record.LogLevel,
-                Message = record.Body,
-                EventId = record.EventId
+                Message = record.Body ?? string.Empty,
+                EventId = record.EventId.Id
             };
             File.AppendAllText(
                 _path,
